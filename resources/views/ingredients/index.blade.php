@@ -19,9 +19,9 @@
                 <tr>
                     <th>ID</th>
                     <th>Tên</th>
-                    <th>Đơn vị</th>
                     <th>Giá</th>
                     <th>Số lượng</th>
+                    <th>Đơn vị</th>
                     <th>Hành động</th>
                 </tr>
                 </thead>
@@ -30,9 +30,9 @@
                     <tr>
                         <td>{{ $ingredient->id }}</td>
                         <td>{{ $ingredient->name }}</td>
+                        <td>{{ Str::formatVND($ingredient->price) }}</td>
+                        <td>{{ Number::formatSmart($ingredient->quantity) }}</td>
                         <td>{{ $ingredient->unit }}</td>
-                        <td>{{ $ingredient->price }}</td>
-                        <td>{{ $ingredient->quantity }}</td>
                         <td>
                             <a href="{{ route('ingredients.edit', $ingredient->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                             <a href="{{ route('ingredients.delete', $ingredient->id) }}" class="btn btn-danger btn-sm">Xóa</a>

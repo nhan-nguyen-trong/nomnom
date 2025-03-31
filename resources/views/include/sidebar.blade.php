@@ -47,13 +47,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/produce-cake') }}" class="nav-link">
+                    <a href="{{ url('/cakes') }}" class="nav-link">
                         <i class="nav-icon fas fa-birthday-cake"></i>
                         <p>Sản xuất bánh</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/sell-cake') }}" class="nav-link">
+                    <a href="{{ url('/products') }}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>Bán bánh</p>
                     </a>

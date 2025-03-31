@@ -13,8 +13,8 @@
                     <h3 class="card-title">Nguyên liệu</h3>
                 </div>
                 <div class="card-body">
-                    <p>Tổng số nguyên liệu: {{ \App\Models\Ingredient::count() }}</p>
-                    <p>Số lượng tồn kho: {{ \App\Models\Ingredient::sum('quantity') }}</p>
+                    <p>Tổng số nguyên liệu: {{ Number::formatSmart($totalIngredients) }}</p>
+                    <p>Số lượng tồn kho: {{ Number::formatSmart($totalIngredientQuantity) }}</p>
                 </div>
             </div>
         </div>
@@ -26,8 +26,8 @@
                     <h3 class="card-title">Bao bì</h3>
                 </div>
                 <div class="card-body">
-                    <p>Tổng số bao bì: {{ \App\Models\Packaging::count() }}</p>
-                    <p>Số lượng tồn kho: {{ \App\Models\Packaging::sum('quantity') }}</p>
+                    <p>Tổng số bao bì: {{ Number::formatSmart($totalPackagings) }}</p>
+                    <p>Số lượng tồn kho: {{ Number::formatSmart($totalPackagingQuantity) }}</p>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
                     <h3 class="card-title">Bánh</h3>
                 </div>
                 <div class="card-body">
-                    <p>Tổng số bánh: {{ \App\Models\Cake::count() }}</p>
+                    <p>Tổng số bánh: {{ Number::formatSmart($totalCakes) }}</p>
                 </div>
             </div>
         </div>
@@ -51,8 +51,8 @@
                     <h3 class="card-title">Doanh thu</h3>
                 </div>
                 <div class="card-body">
-                    <p>Tổng doanh thu: {{ \App\Models\Product::sum('selling_price') }} VND</p>
-                    <p>Tổng lợi nhuận: {{ \App\Models\Product::sum('selling_price') - \App\Models\Product::sum('total_cost') }} VND</p>
+                    <p>Tổng doanh thu: {{ Str::formatVND($totalRevenue) }}</p>
+                    <p>Tổng lợi nhuận: {{ Str::formatVND($totalProfit) }}</p>
                 </div>
             </div>
         </div>

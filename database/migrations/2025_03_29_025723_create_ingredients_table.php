@@ -4,22 +4,29 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIngredientsTable extends Migration
+return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('unit');
-            $table->decimal('price'); // Bỏ 10, 2 để dùng mặc định
-            $table->decimal('quantity'); // Bỏ 10, 2 để dùng mặc định
+            $table->integer('price'); // Thay đổi từ decimal(8,2) thành integer
+            $table->decimal('quantity', 8, 2);
             $table->timestamps();
+            $table->softDeletes(); // Thêm cột deleted_at để hỗ trợ xóa mềm
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('ingredients');
     }
-}
+};

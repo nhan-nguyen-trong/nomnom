@@ -12,7 +12,7 @@ class CreateCakePackagingTable extends Migration
             $table->foreignId('cake_id')->constrained()->onDelete('cascade');
             $table->foreignId('packaging_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
-            $table->decimal('depreciation')->default(0); // Bỏ 10, 2
+            $table->integer('depreciation')->default(0); // Bỏ 10, 2
             $table->primary(['cake_id', 'packaging_id']);
             $table->timestamps();
         });

@@ -31,8 +31,8 @@
                         <td>{{ $packaging->id }}</td>
                         <td>{{ $packaging->name }}</td>
                         <td>{{ $packaging->unit }}</td>
-                        <td>{{ $packaging->price }}</td>
-                        <td>{{ $packaging->quantity }}</td>
+                        <td>{{ Str::formatVND($packaging->price) }}</td>
+                        <td>{{ Number::formatSmart($packaging->quantity) }}</td>
                         <td>
                             <a href="{{ route('packagings.edit', $packaging->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                             <a href="{{ route('packagings.delete', $packaging->id) }}" class="btn btn-danger btn-sm">Xóa</a>

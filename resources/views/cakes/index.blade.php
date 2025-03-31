@@ -1,8 +1,8 @@
 @extends('layouts.adminlte')
 
-@section('title', 'Sản xuất bánh')
+@section('title', 'Quản lý bánh')
 
-@section('page-title', 'Sản xuất bánh')
+@section('page-title', 'Quản lý bánh')
 
 @section('content')
     @if (session()->has('success'))
@@ -13,48 +13,42 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Sản xuất bánh</h3>
+            <h3 class="card-title">Danh sách bánh</h3>
+            <div class="card-tools">
+                <a href="{{ route('cakes.create') }}" class="btn btn-primary">Thêm bánh</a>
+                <a href="{{ route('cakes.recycle') }}" class="btn btn-warning">Thùng rác</a>
+            </div>
         </div>
         <div class="card-body">
-            <form action="{{ route('cakes.produce') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label>Tên bánh:</label>
-                    <input type="text" name="name" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Công thức:</label>
-                    <select name="recipe_id" class="form-control" required>
-                        <option value="">Chọn công thức</option>
-                        @foreach (\App\Models\Recipe::all() as $recipe)
-                            <option value="{{ $recipe->id }}">{{ $recipe->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Số lượng:</label>
-                    <input type="number" name="quantity" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Bao bì:</label>
-                    <select name="packaging_id" class="form-control" required>
-                        <option value="">Chọn bao bì</option>
-                        @foreach (\App\Models\Packaging::all() as $packaging)
-                            <option value="{{ $packaging->id }}">{{ $packaging->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Khấu hao:</label>
-                    <input type="number" name="depreciation" class="form-control" step="0.01">
-                </div>
-
-                <button type="submit" class="btn btn-primary">Sản xuất</button>
-            </form>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên bánh</th>
+                    <th>Công thức</th>
+                    <th>Số lượng</th>
+                    <th>Bao bì</th>
+                    <th>Khấu hao</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($cakes as $cake)
+                    <tr>
+                        <td>{{ $cake->id }}</td>
+                        <td>{{ $cake->name }}</td>
+                        <td>{{ $cake->recipes->first()->name ?? 'N/A' }}</td>
+                        <td>{{ $cake->recipes->first()->pivot->quantity ?? 'N/A' }}</td>
+                        <td>{{ $cake->packagings->first()->name ?? 'N/A' }}</td>
+                        <td>{{ Str::formatVND($cake->packagings->first()->pivot->depreciation) }}</td>
+                        <td>
+                            <a href="{{ route('cakes.edit', $cake->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            <a href="{{ route('cakes.delete', $cake->id) }}" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 @endsection

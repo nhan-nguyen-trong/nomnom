@@ -1,31 +1,54 @@
 @extends('layouts.adminlte')
 
-@section('title', 'Thêm công thức')
+@section('title', 'Thêm báo cáo doanh thu')
 
-@section('page-title', 'Thêm công thức')
+@section('page-title', 'Thêm báo cáo doanh thu')
 
 @section('content')
+    @if (session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Thêm công thức</h3>
+            <h3 class="card-title">Thêm báo cáo doanh thu</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('recipes.store') }}" method="POST">
+            <form action="{{ route('reports.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label>Tên công thức:</label>
-                    <input type="text" name="name" class="form-control" required>
+                    <label>Loại bánh:</label>
+                    <select name="cake_id" class="form-control" required>
+                        <option value="">Chọn bánh</option>
+                        @foreach ($cakes as $cake)
+                            <option value="{{ $cake->id }}" {{ old('cake_id') == $cake->id ? 'selected' : '' }}>
+                                {{ $cake->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('cake_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+
                 <div class="form-group">
-                    <label>Nguyên liệu:</label>
-                    @foreach (\App\Models\Ingredient::all() as $ingredient)
-                        <div>
-                            <input type="checkbox" name="ingredients[{{ $ingredient->id }}][id]" value="{{ $ingredient->id }}">
-                            <label>{{ $ingredient->name }}</label>
-                            <input type="number" name="ingredients[{{ $ingredient->id }}][quantity]" placeholder="Số lượng" step="0.01">
-                        </div>
-                    @endforeach
+                    <label>Số lượng bán:</label>
+                    <input type="number" name="quantity_sold" class="form-control" value="{{ old('quantity_sold') }}" required>
+                    @error('quantity_sold')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+
+                <div class="form-group">
+                    <label>Giá bán:</label>
+                    <input type="number" name="selling_price" class="form-control" step="0.01" value="{{ old('selling_price') }}" required>
+                    @error('selling_price')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 <button type="submit" class="btn btn-primary">Thêm</button>
             </form>
         </div>

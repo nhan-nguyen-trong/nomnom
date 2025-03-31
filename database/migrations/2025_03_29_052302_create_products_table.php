@@ -11,13 +11,14 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cake_id')->constrained()->onDelete('cascade');
-            $table->decimal('ingredient_cost'); // Bỏ 10, 2
-            $table->decimal('packaging_cost'); // Bỏ 10, 2
-            $table->decimal('depreciation_cost'); // Bỏ 10, 2
+            $table->integer('ingredient_cost'); // Bỏ 10, 2
+            $table->integer('packaging_cost'); // Bỏ 10, 2
+            $table->integer('depreciation_cost'); // Bỏ 10, 2
             $table->integer('quantity_sold');
-            $table->decimal('total_cost'); // Bỏ 10, 2
-            $table->decimal('selling_price'); // Bỏ 10, 2
+            $table->integer('total_cost'); // Bỏ 10, 2
+            $table->integer('selling_price'); // Bỏ 10, 2
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

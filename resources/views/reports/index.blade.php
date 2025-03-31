@@ -1,13 +1,23 @@
 @extends('layouts.adminlte')
 
-@section('title', 'Báo cáo doanh thu')
+@section('title', 'Quản lý báo cáo doanh thu')
 
-@section('page-title', 'Báo cáo doanh thu')
+@section('page-title', 'Quản lý báo cáo doanh thu')
 
 @section('content')
+    @if (session()->has('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sách giao dịch</h3>
+            <h3 class="card-title">Danh sách báo cáo doanh thu</h3>
+            <div class="card-tools">
+                <a href="{{ route('reports.create') }}" class="btn btn-primary">Thêm báo cáo</a>
+                <a href="{{ route('reports.recycle') }}" class="btn btn-warning">Thùng rác</a>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-bordered">
@@ -22,20 +32,25 @@
                     <th>Tổng chi phí</th>
                     <th>Giá bán</th>
                     <th>Lợi nhuận</th>
+                    <th>Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (\App\Models\Product::all() as $product)
+                @foreach ($products as $product)
                     <tr>
                         <td>{{ $product->id }}</td>
                         <td>{{ $product->cake->name }}</td>
                         <td>{{ $product->quantity_sold }}</td>
-                        <td>{{ $product->ingredient_cost }}</td>
-                        <td>{{ $product->packaging_cost }}</td>
-                        <td>{{ $product->depreciation_cost }}</td>
-                        <td>{{ $product->total_cost }}</td>
-                        <td>{{ $product->selling_price }}</td>
-                        <td>{{ $product->selling_price - $product->total_cost }}</td>
+                        <td>{{ Str::formatVND($product->ingredient_cost) }}</td>
+                        <td>{{ Str::formatVND($product->packaging_cost) }}</td>
+                        <td>{{ Str::formatVND($product->depreciation_cost) }}</td>
+                        <td>{{ Str::formatVND($product->total_cost) }}</td>
+                        <td>{{ Str::formatVND($product->selling_price) }}</td>
+                        <td>{{ Str::formatVND($product->selling_price - $product->total_cost) }}</td>
+                        <td>
+                            <a href="{{ route('reports.edit', $product->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            <a href="{{ route('reports.delete', $product->id) }}" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

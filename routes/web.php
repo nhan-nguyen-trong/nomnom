@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Livewire\Volt\Volt;
-
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\PackagingController;
@@ -11,12 +9,10 @@ use App\Http\Controllers\CakeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 
-// Dashboard
-Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
-    Route::get('/', [DashboardController::class, 'index'])->defaults('_config', [
-        'view' => 'dashboard.index'
-    ])->name('index');
-});
+// Dashboard tại URL gốc '/'
+Route::get('/', [DashboardController::class, 'index'])->defaults('_config', [
+    'view' => 'dashboard'
+])->name('dashboard.index');
 
 // Quản lý nguyên liệu
 Route::group(['prefix' => 'ingredients', 'as' => 'ingredients.'], function () {
@@ -153,9 +149,41 @@ Route::group(['prefix' => 'cakes', 'as' => 'cakes.'], function () {
         'view' => 'cakes.index'
     ])->name('index');
 
-    Route::post('/produce', [CakeController::class, 'produce'])->defaults('_config', [
+    Route::get('/create', [CakeController::class, 'create'])->defaults('_config', [
+        'view' => 'cakes.create'
+    ])->name('create');
+
+    Route::post('/store', [CakeController::class, 'store'])->defaults('_config', [
         'redirect' => 'cakes.index'
-    ])->name('produce');
+    ])->name('store');
+
+    Route::get('/edit/{id}', [CakeController::class, 'edit'])->defaults('_config', [
+        'view' => 'cakes.edit'
+    ])->name('edit');
+
+    Route::post('/update/{id}', [CakeController::class, 'update'])->defaults('_config', [
+        'redirect' => 'cakes.index'
+    ])->name('update');
+
+    Route::get('/delete/{id}', [CakeController::class, 'delete'])->defaults('_config', [
+        'view' => 'cakes.delete'
+    ])->name('delete');
+
+    Route::delete('/destroy/{id}', [CakeController::class, 'destroy'])->defaults('_config', [
+        'redirect' => 'cakes.index'
+    ])->name('destroy');
+
+    Route::get('/recycle', [CakeController::class, 'recycle'])->defaults('_config', [
+        'view' => 'cakes.recycle'
+    ])->name('recycle');
+
+    Route::get('/restore/{id}', [CakeController::class, 'restore'])->defaults('_config', [
+        'redirect' => 'cakes.recycle'
+    ])->name('restore');
+
+    Route::get('/force-delete/{id}', [CakeController::class, 'forceDelete'])->defaults('_config', [
+        'redirect' => 'cakes.recycle'
+    ])->name('forceDelete');
 });
 
 // Bán bánh
@@ -164,9 +192,41 @@ Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
         'view' => 'products.index'
     ])->name('index');
 
-    Route::post('/sell', [ProductController::class, 'sell'])->defaults('_config', [
+    Route::get('/create', [ProductController::class, 'create'])->defaults('_config', [
+        'view' => 'products.create'
+    ])->name('create');
+
+    Route::post('/store', [ProductController::class, 'store'])->defaults('_config', [
         'redirect' => 'products.index'
-    ])->name('sell');
+    ])->name('store');
+
+    Route::get('/edit/{id}', [ProductController::class, 'edit'])->defaults('_config', [
+        'view' => 'products.edit'
+    ])->name('edit');
+
+    Route::post('/update/{id}', [ProductController::class, 'update'])->defaults('_config', [
+        'redirect' => 'products.index'
+    ])->name('update');
+
+    Route::get('/delete/{id}', [ProductController::class, 'delete'])->defaults('_config', [
+        'view' => 'products.delete'
+    ])->name('delete');
+
+    Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->defaults('_config', [
+        'redirect' => 'products.index'
+    ])->name('destroy');
+
+    Route::get('/recycle', [ProductController::class, 'recycle'])->defaults('_config', [
+        'view' => 'products.recycle'
+    ])->name('recycle');
+
+    Route::get('/restore/{id}', [ProductController::class, 'restore'])->defaults('_config', [
+        'redirect' => 'products.recycle'
+    ])->name('restore');
+
+    Route::get('/force-delete/{id}', [ProductController::class, 'forceDelete'])->defaults('_config', [
+        'redirect' => 'products.recycle'
+    ])->name('forceDelete');
 });
 
 // Báo cáo doanh thu
@@ -174,6 +234,40 @@ Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
     Route::get('/', [ReportController::class, 'index'])->defaults('_config', [
         'view' => 'reports.index'
     ])->name('index');
-});
 
-require __DIR__.'/auth.php';
+    Route::get('/create', [ReportController::class, 'create'])->defaults('_config', [
+        'view' => 'reports.create'
+    ])->name('create');
+
+    Route::post('/store', [ReportController::class, 'store'])->defaults('_config', [
+        'redirect' => 'reports.index'
+    ])->name('store');
+
+    Route::get('/edit/{id}', [ReportController::class, 'edit'])->defaults('_config', [
+        'view' => 'reports.edit'
+    ])->name('edit');
+
+    Route::post('/update/{id}', [ReportController::class, 'update'])->defaults('_config', [
+        'redirect' => 'reports.index'
+    ])->name('update');
+
+    Route::get('/delete/{id}', [ReportController::class, 'delete'])->defaults('_config', [
+        'view' => 'reports.delete'
+    ])->name('delete');
+
+    Route::delete('/destroy/{id}', [ReportController::class, 'destroy'])->defaults('_config', [
+        'redirect' => 'reports.index'
+    ])->name('destroy');
+
+    Route::get('/recycle', [ReportController::class, 'recycle'])->defaults('_config', [
+        'view' => 'reports.recycle'
+    ])->name('recycle');
+
+    Route::get('/restore/{id}', [ReportController::class, 'restore'])->defaults('_config', [
+        'redirect' => 'reports.recycle'
+    ])->name('restore');
+
+    Route::get('/force-delete/{id}', [ReportController::class, 'forceDelete'])->defaults('_config', [
+        'redirect' => 'reports.recycle'
+    ])->name('forceDelete');
+});

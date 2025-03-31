@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use App\Models\Ingredient;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -22,7 +23,8 @@ class RecipeController extends Controller
      */
     public function create(): View
     {
-        return view('recipes.create');
+        $ingredients = Ingredient::all(); // Lấy tất cả nguyên liệu
+        return view('recipes.create', compact('ingredients'));
     }
 
     /**
@@ -30,12 +32,32 @@ class RecipeController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'ingredients' => 'required|array',
+            'ingredients.*.id' => 'required|exists:ingredients,id',
+            'ingredients.*.quantity' => 'required|numeric|min:0',
+        ]);
+
+        // Kiểm tra số lượng tồn kho của nguyên liệu
+        foreach ($request->ingredients as $ingredientId => $data) {
+            if (isset($data['id'])) {
+                $ingredient = Ingredient::findOrFail($ingredientId);
+                $requiredQuantity = $data['quantity'];
+                if ($requiredQuantity > $ingredient->quantity) {
+                    return redirect()->back()->with('error', "Không đủ nguyên liệu {$ingredient->name} trong kho. Cần {$requiredQuantity} {$ingredient->unit}, nhưng chỉ có {$ingredient->quantity} {$ingredient->unit}.");
+                }
+            }
+        }
+
+        // Nếu kiểm tra thành công, tạo công thức
         $recipe = Recipe::create(['name' => $request->name]);
         foreach ($request->ingredients as $ingredientId => $data) {
             if (isset($data['id'])) {
                 $recipe->ingredients()->attach($ingredientId, ['quantity' => $data['quantity']]);
             }
         }
+
         return redirect()->route('recipes.index')->with('success', 'Thêm công thức thành công!');
     }
 
@@ -45,7 +67,8 @@ class RecipeController extends Controller
     public function edit(int $id): View
     {
         $recipe = Recipe::findOrFail($id);
-        return view('recipes.edit', compact('recipe'));
+        $ingredients = Ingredient::all(); // Lấy tất cả nguyên liệu
+        return view('recipes.edit', compact('recipe', 'ingredients'));
     }
 
     /**
@@ -53,6 +76,25 @@ class RecipeController extends Controller
      */
     public function update(Request $request, int $id): RedirectResponse
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'ingredients' => 'required|array',
+            'ingredients.*.id' => 'required|exists:ingredients,id',
+            'ingredients.*.quantity' => 'required|numeric|min:0',
+        ]);
+
+        // Kiểm tra số lượng tồn kho của nguyên liệu
+        foreach ($request->ingredients as $ingredientId => $data) {
+            if (isset($data['id'])) {
+                $ingredient = Ingredient::findOrFail($ingredientId);
+                $requiredQuantity = $data['quantity'];
+                if ($requiredQuantity > $ingredient->quantity) {
+                    return redirect()->back()->with('error', "Không đủ nguyên liệu {$ingredient->name} trong kho. Cần {$requiredQuantity} {$ingredient->unit}, nhưng chỉ có {$ingredient->quantity} {$ingredient->unit}.");
+                }
+            }
+        }
+
+        // Nếu kiểm tra thành công, cập nhật công thức
         $recipe = Recipe::findOrFail($id);
         $recipe->update(['name' => $request->name]);
         $recipe->ingredients()->sync([]);
@@ -61,6 +103,7 @@ class RecipeController extends Controller
                 $recipe->ingredients()->attach($ingredientId, ['quantity' => $data['quantity']]);
             }
         }
+
         return redirect()->route('recipes.index')->with('success', 'Cập nhật công thức thành công!');
     }
 

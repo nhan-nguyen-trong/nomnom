@@ -21,12 +21,12 @@
                     <input type="text" name="unit" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label>Giá:</label>
-                    <input type="number" name="price" class="form-control" step="0.01" required>
-                </div>
-                <div class="form-group">
                     <label>Số lượng:</label>
                     <input type="number" name="quantity" class="form-control" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Giá:</label>
+                    <input type="number" name="price" class="form-control" step="0.01" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Thêm</button>
             </form>
