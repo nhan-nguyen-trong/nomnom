@@ -2,24 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Recipe extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['name'];
 
     public function ingredients()
     {
         return $this->belongsToMany(Ingredient::class, 'recipe_ingredients')
-            ->withPivot('quantity');
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 
-    public function cakes()
+    public function cake()
     {
-        return $this->belongsToMany(Cake::class, 'cake_recipes')
-            ->withPivot('quantity');
+        return $this->hasOne(Cake::class);
     }
 }

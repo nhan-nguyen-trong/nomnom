@@ -2,25 +2,25 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Packaging;
+use Illuminate\Database\Seeder;
 
 class PackagingSeeder extends Seeder
 {
     public function run(): void
     {
         Packaging::create([
-            'name' => 'Túi giấy',
+            'name' => 'Bọc giấy',
+            'quantity' => 100,
             'unit' => 'cái',
-            'price' => 1.00, // 1,000 VND/cái
-            'quantity' => 500,
+            'price' => 500, // Giá: 500 VNĐ/cái
         ]);
 
         Packaging::create([
-            'name' => 'Hộp nhựa',
+            'name' => 'Túi nilong',
+            'quantity' => 200,
             'unit' => 'cái',
-            'price' => 2.00, // 2,000 VND/cái
-            'quantity' => 300,
+            'price' => 200, // Giá: 200 VNĐ/cái
         ]);
     }
 }

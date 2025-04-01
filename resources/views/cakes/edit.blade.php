@@ -34,6 +34,14 @@
                 </div>
 
                 <div class="form-group mb-4">
+                    <label for="depreciation" class="font-weight-bold">Khấu hao (VND):</label>
+                    <input type="number" name="depreciation" id="depreciation" class="form-control" value="{{ $cake->depreciation }}" step="1" required>
+                    @error('depreciation')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group mb-4">
                     <label class="font-weight-bold">Chọn công thức:</label>
                     <select name="recipe_id" id="recipe-select" class="form-control" required>
                         <option value="">Chọn công thức</option>
@@ -55,7 +63,7 @@
                             <option value="">Chọn bao bì</option>
                             @foreach ($packagings as $packaging)
                                 <option value="{{ $packaging->id }}" data-name="{{ $packaging->name }}" data-unit="{{ $packaging->unit }}">
-                                    {{ $packaging->name }} ({{ $packaging->quantity }} {{ $packaging->unit }} còn lại)
+                                    {{ $packaging->name }} ({{ $packaging->quantity }} {{ $packaging->unit }} còn lại, Giá: {{ Str::formatVND($packaging->price) }}/{{ $packaging->unit }})
                                 </option>
                             @endforeach
                         </select>
@@ -75,7 +83,6 @@
                             <th>Bao bì</th>
                             <th>Số lượng</th>
                             <th>Đơn vị</th>
-                            <th>Khấu hao (VND)</th>
                             <th>Hành động</th>
                         </tr>
                         </thead>
@@ -88,9 +95,6 @@
                                     <input type="hidden" name="packagings[{{ $packaging->id }}][id]" value="{{ $packaging->id }}">
                                 </td>
                                 <td>{{ $packaging->unit }}</td>
-                                <td>
-                                    <input type="number" name="packagings[{{ $packaging->id }}][depreciation]" class="form-control" step="0.01" value="{{ $packaging->pivot->depreciation }}" required>
-                                </td>
                                 <td>
                                     <button type="button" class="btn btn-danger btn-sm remove-packaging">
                                         <i class="fas fa-trash"></i>
@@ -190,7 +194,7 @@
                 }
             });
 
-            // Xử lý sự kiện khi nhấn nút "+"
+            // Xử lý sự kiện khi nhấn nút "+ Thêm bao bì"
             $('#add-packaging').click(function () {
                 const selectedOption = $('#packaging-select option:selected');
                 const packagingId = selectedOption.val();
@@ -217,9 +221,6 @@
                             <input type="hidden" name="packagings[${packagingId}][id]" value="${packagingId}">
                         </td>
                         <td>${packagingUnit}</td>
-                        <td>
-                            <input type="number" name="packagings[${packagingId}][depreciation]" class="form-control" step="0.01" required>
-                        </td>
                         <td>
                             <button type="button" class="btn btn-danger btn-sm remove-packaging">
                                 <i class="fas fa-trash"></i>

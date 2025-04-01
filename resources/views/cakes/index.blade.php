@@ -26,7 +26,6 @@
                     <th>ID</th>
                     <th>Tên bánh</th>
                     <th>Công thức</th>
-                    <th>Số lượng</th>
                     <th>Bao bì</th>
                     <th>Khấu hao</th>
                     <th>Hành động</th>
@@ -37,10 +36,19 @@
                     <tr>
                         <td>{{ $cake->id }}</td>
                         <td>{{ $cake->name }}</td>
-                        <td>{{ $cake->recipes->first()->name ?? 'N/A' }}</td>
-                        <td>{{ $cake->recipes->first()->pivot->quantity ?? 'N/A' }}</td>
-                        <td>{{ $cake->packagings->first()->name ?? 'N/A' }}</td>
-                        <td>{{ Str::formatVND($cake->packagings->first()->pivot->depreciation) }}</td>
+                        <td>
+                            {{ $cake->recipe->name ?? 'N/A' }}
+                        </td>
+                        <td>
+                            @if ($cake->packagings->isNotEmpty())
+                                @foreach ($cake->packagings as $packaging)
+                                    {{ $packaging->name }} (Số lượng: {{ Number::formatSmart($packaging->pivot->quantity) }} {{ $packaging->unit }})<br>
+                                @endforeach
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                        <td>{{ Str::formatVND($cake->depreciation) }}</td>
                         <td>
                             <a href="{{ route('cakes.edit', $cake->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                             <a href="{{ route('cakes.delete', $cake->id) }}" class="btn btn-danger btn-sm">Xóa</a>

@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             RecipeSeeder::class,
             RecipeIngredientSeeder::class,
             CakeSeeder::class,
-            CakeRecipeSeeder::class,
             CakePackagingSeeder::class,
             ProductSeeder::class,
         ]);

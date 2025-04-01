@@ -11,6 +11,7 @@ class CreateCakesTable extends Migration
         Schema::create('cakes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('depreciation')->default(0); // Bỏ 10, 2
             $table->timestamps();
             $table->softDeletes();
         });

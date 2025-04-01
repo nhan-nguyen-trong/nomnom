@@ -2,14 +2,44 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Cake;
+use App\Models\Packaging;
+use App\Models\Recipe;
+use Illuminate\Database\Seeder;
 
 class CakeSeeder extends Seeder
 {
     public function run(): void
     {
-        Cake::create(['name' => 'Bánh mì kẹp']);
-        Cake::create(['name' => 'Bánh ngọt nhân kem']);
+        // Lấy công thức và bao bì đã tạo
+        $recipe1 = Recipe::where('name', 'Bột gạo')->first();
+        $recipe2 = Recipe::where('name', 'Túi nilong')->first();
+        $packaging1 = Packaging::where('name', 'Bọc giấy')->first();
+        $packaging2 = Packaging::where('name', 'Túi nilong')->first();
+
+        // Tạo bánh 1
+        $cake1 = Cake::create([
+            'name' => 'Tiramisu',
+            'recipe_id' => $recipe1->id,
+            'depreciation' => 10000,
+        ]);
+
+        // Gắn bao bì cho bánh 1
+        $cake1->packagings()->attach([
+            $packaging1->id => ['quantity' => 3],
+            $packaging2->id => ['quantity' => 13],
+        ]);
+
+        // Tạo bánh 2
+        $cake2 = Cake::create([
+            'name' => 'Bánh mì',
+            'recipe_id' => $recipe2->id,
+            'depreciation' => 5000,
+        ]);
+
+        // Gắn bao bì cho bánh 2
+        $cake2->packagings()->attach([
+            $packaging1->id => ['quantity' => 5],
+        ]);
     }
 }

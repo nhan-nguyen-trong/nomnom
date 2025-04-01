@@ -16,6 +16,6 @@ class Packaging extends Model
     public function cakes()
     {
         return $this->belongsToMany(Cake::class, 'cake_packaging')
-            ->withPivot('quantity', 'depreciation');
+            ->withPivot('quantity');
     }
 }

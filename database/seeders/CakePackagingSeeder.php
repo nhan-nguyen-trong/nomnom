@@ -14,7 +14,6 @@ class CakePackagingSeeder extends Seeder
             'cake_id' => 1,
             'packaging_id' => 1,
             'quantity' => 10, // 10 bánh mì kẹp cần 10 túi giấy
-            'depreciation' => 0,
         ]);
 
         // Bánh ngọt nhân kem (cake_id: 2) dùng hộp nhựa (packaging_id: 2)
@@ -22,7 +21,6 @@ class CakePackagingSeeder extends Seeder
             'cake_id' => 2,
             'packaging_id' => 2,
             'quantity' => 5, // 5 bánh ngọt cần 5 hộp nhựa
-            'depreciation' => 0,
         ]);
     }
 }

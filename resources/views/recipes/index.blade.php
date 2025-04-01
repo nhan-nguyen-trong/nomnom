@@ -30,7 +30,7 @@
                         <td>{{ $recipe->name }}</td>
                         <td>
                             @foreach ($recipe->ingredients as $ingredient)
-                                {{ $ingredient->name }} ({{ $ingredient->pivot->quantity }} {{ $ingredient->unit }}),
+                                {{ $ingredient->name }} ({{ Number::formatSmart($ingredient->pivot->quantity) }} {{ $ingredient->unit }}),
                             @endforeach
                         </td>
                         <td>
