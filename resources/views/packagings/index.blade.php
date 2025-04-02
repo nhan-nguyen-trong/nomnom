@@ -26,7 +26,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (\App\Models\Packaging::all() as $packaging)
+                @foreach ($packagings as $packaging)
                     <tr>
                         <td>{{ $packaging->id }}</td>
                         <td>{{ $packaging->name }}</td>
@@ -41,6 +41,10 @@
                 @endforeach
                 </tbody>
             </table>
+            <!-- Thêm phân trang -->
+            <div class="mt-4">
+                {{ $packagings->links('pagination.custom') }}
+            </div>
         </div>
     </div>
 @endsection

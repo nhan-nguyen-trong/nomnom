@@ -15,7 +15,8 @@ class RecipeController extends Controller
      */
     public function index(): View
     {
-        return view('recipes.index');
+        $recipes = Recipe::latest()->paginate(10); // Phân trang, mỗi trang 10 bản ghi
+        return view('recipes.index', compact('recipes'));
     }
 
     /**

@@ -14,7 +14,8 @@ class IngredientController extends Controller
      */
     public function index(): View
     {
-        return view('ingredients.index');
+        $ingredients = Ingredient::latest()->paginate(10);
+        return view('ingredients.index', compact('ingredients'));
     }
 
     /**

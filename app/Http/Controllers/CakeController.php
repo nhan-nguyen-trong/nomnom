@@ -13,7 +13,7 @@ class CakeController extends Controller
 {
     public function index(): View
     {
-        $cakes = Cake::with(['recipe', 'packagings'])->get();
+        $cakes = Cake::with(['recipe', 'packagings'])->paginate(10);
         return view('cakes.index', compact('cakes'));
     }
 

@@ -57,6 +57,10 @@
                 @endforeach
                 </tbody>
             </table>
+            <!-- Thêm phân trang -->
+            <div class="mt-4">
+                {{ $cakes->links('pagination.custom') }}
+            </div>
         </div>
     </div>
 @endsection

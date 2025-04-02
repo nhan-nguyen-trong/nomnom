@@ -24,7 +24,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (\App\Models\Recipe::all() as $recipe)
+                @foreach ($recipes as $recipe)
                     <tr>
                         <td>{{ $recipe->id }}</td>
                         <td>{{ $recipe->name }}</td>
@@ -41,6 +41,10 @@
                 @endforeach
                 </tbody>
             </table>
+            <!-- Thêm phân trang -->
+            <div class="mt-4">
+                {{ $recipes->links('pagination.custom') }}
+            </div>
         </div>
     </div>
 @endsection

@@ -1,0 +1,27 @@
+/* CSS cho phân trang - áp dụng cho tất cả các trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+.pagination .page-item {
+    margin: 0 5px;
+}
+.pagination .page-item .page-link {
+    color: #343a40;
+    border-color: #dee2e6;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+.pagination .page-item .page-link:hover {
+    background-color: #f8f9fa;
+}
+.pagination .page-item.active .page-link {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+}
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+}

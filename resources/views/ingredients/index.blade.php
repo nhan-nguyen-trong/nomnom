@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (\App\Models\Ingredient::all() as $ingredient)
+                @foreach ($ingredients as $ingredient)
                     <tr>
                         <td>{{ $ingredient->id }}</td>
                         <td>{{ $ingredient->name }}</td>
@@ -39,6 +39,10 @@
                 @endforeach
                 </tbody>
             </table>
+            <!-- Thêm phân trang -->
+            <div class="mt-4">
+                {{ $ingredients->links('pagination.custom') }}
+            </div>
         </div>
     </div>
 @endsection
