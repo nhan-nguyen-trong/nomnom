@@ -31,18 +31,14 @@ class CakeController extends Controller
             'recipe_id' => 'required|exists:recipes,id',
             'depreciation' => 'required|integer|min:0',
             'packagings' => 'required|array',
-            'packagings.*.id' => 'required|exists:packagings,id',
-            'packagings.*.quantity' => 'required|numeric|min:0',
+            'packagings.*' => 'required|exists:packagings,id', // Chỉ cần validate ID
         ]);
 
-        // Kiểm tra số lượng tồn kho của bao bì
-        foreach ($request->packagings as $packagingId => $data) {
-            if (isset($data['id'])) {
-                $packaging = Packaging::findOrFail($packagingId);
-                $requiredQuantity = $data['quantity'];
-                if ($requiredQuantity > $packaging->quantity) {
-                    return redirect()->back()->with('error', "Không đủ bao bì {$packaging->name} trong kho. Cần {$requiredQuantity} {$packaging->unit}, nhưng chỉ có {$packaging->quantity} {$packaging->unit}.");
-                }
+        // Kiểm tra số lượng tồn kho của bao bì (mỗi bao bì cần 1 cái)
+        foreach ($request->packagings as $packagingId) {
+            $packaging = Packaging::findOrFail($packagingId);
+            if (1 > $packaging->quantity) {
+                return redirect()->back()->with('error', "Không đủ bao bì {$packaging->name} trong kho. Cần 1 {$packaging->unit}, nhưng chỉ có {$packaging->quantity} {$packaging->unit}.");
             }
         }
 
@@ -53,14 +49,8 @@ class CakeController extends Controller
             'depreciation' => $request->depreciation,
         ]);
 
-        // Gắn bao bì cho bánh
-        foreach ($request->packagings as $packagingId => $data) {
-            if (isset($data['id'])) {
-                $cake->packagings()->attach($packagingId, [
-                    'quantity' => $data['quantity'],
-                ]);
-            }
-        }
+        // Gắn bao bì cho bánh (quantity mặc định là 1)
+        $cake->packagings()->attach($request->packagings);
 
         return redirect()->route('cakes.index')->with('success', 'Thêm bánh thành công!');
     }
@@ -80,18 +70,14 @@ class CakeController extends Controller
             'recipe_id' => 'required|exists:recipes,id',
             'depreciation' => 'required|integer|min:0',
             'packagings' => 'required|array',
-            'packagings.*.id' => 'required|exists:packagings,id',
-            'packagings.*.quantity' => 'required|numeric|min:0',
+            'packagings.*' => 'required|exists:packagings,id',
         ]);
 
-        // Kiểm tra số lượng tồn kho của bao bì
-        foreach ($request->packagings as $packagingId => $data) {
-            if (isset($data['id'])) {
-                $packaging = Packaging::findOrFail($packagingId);
-                $requiredQuantity = $data['quantity'];
-                if ($requiredQuantity > $packaging->quantity) {
-                    return redirect()->back()->with('error', "Không đủ bao bì {$packaging->name} trong kho. Cần {$requiredQuantity} {$packaging->unit}, nhưng chỉ có {$packaging->quantity} {$packaging->unit}.");
-                }
+        // Kiểm tra số lượng tồn kho của bao bì (mỗi bao bì cần 1 cái)
+        foreach ($request->packagings as $packagingId) {
+            $packaging = Packaging::findOrFail($packagingId);
+            if (1 > $packaging->quantity) {
+                return redirect()->back()->with('error', "Không đủ bao bì {$packaging->name} trong kho. Cần 1 {$packaging->unit}, nhưng chỉ có {$packaging->quantity} {$packaging->unit}.");
             }
         }
 
@@ -103,15 +89,8 @@ class CakeController extends Controller
             'depreciation' => $request->depreciation,
         ]);
 
-        // Cập nhật bao bì
-        $cake->packagings()->sync([]);
-        foreach ($request->packagings as $packagingId => $data) {
-            if (isset($data['id'])) {
-                $cake->packagings()->attach($packagingId, [
-                    'quantity' => $data['quantity'],
-                ]);
-            }
-        }
+        // Cập nhật bao bì (quantity mặc định là 1)
+        $cake->packagings()->sync($request->packagings);
 
         return redirect()->route('cakes.index')->with('success', 'Cập nhật bánh thành công!');
     }

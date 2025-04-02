@@ -24,10 +24,10 @@ class CakeSeeder extends Seeder
             'depreciation' => 10000,
         ]);
 
-        // Gắn bao bì cho bánh 1
+        // Gắn bao bì cho bánh 1 (quantity mặc định là 1)
         $cake1->packagings()->attach([
-            $packaging1->id => ['quantity' => 3],
-            $packaging2->id => ['quantity' => 13],
+            $packaging1->id,
+            $packaging2->id,
         ]);
 
         // Tạo bánh 2
@@ -37,9 +37,9 @@ class CakeSeeder extends Seeder
             'depreciation' => 5000,
         ]);
 
-        // Gắn bao bì cho bánh 2
+        // Gắn bao bì cho bánh 2 (quantity mặc định là 1)
         $cake2->packagings()->attach([
-            $packaging1->id => ['quantity' => 5],
+            $packaging1->id,
         ]);
     }
 }

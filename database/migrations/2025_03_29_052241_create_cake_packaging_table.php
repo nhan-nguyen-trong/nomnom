@@ -12,7 +12,7 @@ class CreateCakePackagingTable extends Migration
             $table->id();
             $table->foreignId('cake_id')->constrained()->onDelete('cascade');
             $table->foreignId('packaging_id')->constrained()->onDelete('cascade');
-            $table->decimal('quantity', 8, 2);
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }

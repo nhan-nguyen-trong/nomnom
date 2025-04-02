@@ -42,7 +42,7 @@
                         <td>
                             @if ($cake->packagings->isNotEmpty())
                                 @foreach ($cake->packagings as $packaging)
-                                    {{ $packaging->name }} (Số lượng: {{ Number::formatSmart($packaging->pivot->quantity) }} {{ $packaging->unit }})<br>
+                                    {{ $packaging->name }}<br>
                                 @endforeach
                             @else
                                 N/A

@@ -17,7 +17,7 @@
             @if ($cake->packagings->isNotEmpty())
                 <ul>
                     @foreach ($cake->packagings as $packaging)
-                        <li>{{ $packaging->name }} (Số lượng: {{ $packaging->pivot->quantity }} {{ $packaging->unit }})</li>
+                        <li>{{ $packaging->name }}</li>
                     @endforeach
                 </ul>
             @else

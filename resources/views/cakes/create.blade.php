@@ -80,7 +80,6 @@
                         <thead class="thead-light">
                         <tr>
                             <th>Bao bì</th>
-                            <th>Số lượng</th>
                             <th>Đơn vị</th>
                             <th>Hành động</th>
                         </tr>
@@ -118,10 +117,6 @@
         /* Cải thiện bảng bao bì đã chọn */
         #selected-packagings th, #selected-packagings td {
             vertical-align: middle;
-        }
-
-        #selected-packagings input[type="number"] {
-            width: 100px;
         }
 
         /* Cải thiện nút Thêm */
@@ -192,7 +187,7 @@
                 }
 
                 // Kiểm tra xem bao bì đã được thêm chưa
-                if ($(`input[name="packagings[${packagingId}][id]"]`).length > 0) {
+                if ($(`input[name="packagings[]"][value="${packagingId}"]`).length > 0) {
                     alert('Bao bì này đã được thêm!');
                     return;
                 }
@@ -201,12 +196,9 @@
                 const row = `
                     <tr data-id="${packagingId}">
                         <td>${packagingName}</td>
-                        <td>
-                            <input type="number" name="packagings[${packagingId}][quantity]" class="form-control" step="0.01" required>
-                            <input type="hidden" name="packagings[${packagingId}][id]" value="${packagingId}">
-                        </td>
                         <td>${packagingUnit}</td>
                         <td>
+                            <input type="hidden" name="packagings[]" value="${packagingId}">
                             <button type="button" class="btn btn-danger btn-sm remove-packaging">
                                 <i class="fas fa-trash"></i>
                             </button>
