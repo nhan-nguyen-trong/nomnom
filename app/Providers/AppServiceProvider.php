@@ -31,12 +31,16 @@ class AppServiceProvider extends ServiceProvider
 
         // Đăng ký macro formatSmart cho Number
         Number::macro('formatSmart', function (float $number, int $decimals = 2) {
-            // Nếu phần thập phân bằng 0, chỉ hiển thị số nguyên
-            if (floor($number * pow(10, $decimals)) == $number * pow(10, $decimals)) {
-                return number_format($number, 0, ',', '.');
-            }
-            // Nếu không, hiển thị đầy đủ với số chữ số thập phân được chỉ định
-            return number_format($number, $decimals, ',', '.');
+            // Chuyển số thành chuỗi với độ chính xác đầy đủ
+            $formatted = rtrim(sprintf('%.'.$decimals.'f', $number), '0'); // Loại bỏ số 0 thừa ở cuối
+            $formatted = rtrim($formatted, '.'); // Loại bỏ dấu chấm nếu không còn phần thập phân
+
+            // Thêm dấu chấm làm phân cách hàng nghìn cho phần nguyên
+            $parts = explode('.', $formatted);
+            $parts[0] = number_format((float)$parts[0], 0, '', '.');
+
+            // Nối lại phần nguyên và phần thập phân (nếu có)
+            return isset($parts[1]) ? $parts[0] . ',' . $parts[1] : $parts[0];
         });
     }
 }
