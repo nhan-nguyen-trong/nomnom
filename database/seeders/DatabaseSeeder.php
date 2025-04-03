@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // Gọi các seeder theo thứ tự để đảm bảo dữ liệu liên kết đúng
         $this->call([
+            IngredientCategorySeeder::class,
             IngredientSeeder::class,
-            PackagingSeeder::class,
             RecipeSeeder::class,
             RecipeIngredientSeeder::class,
+            PackagingSeeder::class,
             CakeSeeder::class,
+            CakePackagingSeeder::class,
             ProductSeeder::class,
         ]);
 

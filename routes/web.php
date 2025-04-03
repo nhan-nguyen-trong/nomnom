@@ -16,45 +16,56 @@ Route::get('/', [DashboardController::class, 'index'])->defaults('_config', [
 
 // Quản lý nguyên liệu
 Route::group(['prefix' => 'ingredients', 'as' => 'ingredients.'], function () {
-    Route::get('/', [IngredientController::class, 'index'])->defaults('_config', [
-        'view' => 'ingredients.index'
-    ])->name('index');
-
-    Route::get('/create', [IngredientController::class, 'create'])->defaults('_config', [
-        'view' => 'ingredients.create'
-    ])->name('create');
-
-    Route::post('/store', [IngredientController::class, 'store'])->defaults('_config', [
-        'redirect' => 'ingredients.index'
-    ])->name('store');
-
-    Route::get('/edit/{id}', [IngredientController::class, 'edit'])->defaults('_config', [
-        'view' => 'ingredients.edit'
-    ])->name('edit');
-
-    Route::post('/update/{id}', [IngredientController::class, 'update'])->defaults('_config', [
-        'redirect' => 'ingredients.index'
-    ])->name('update');
-
-    Route::get('/delete/{id}', [IngredientController::class, 'delete'])->defaults('_config', [
-        'view' => 'ingredients.delete'
-    ])->name('delete');
-
-    Route::delete('/destroy/{id}', [IngredientController::class, 'destroy'])->defaults('_config', [
-        'redirect' => 'ingredients.index'
-    ])->name('destroy');
-
+    // Route tùy chỉnh cho recycle, restore, forceDelete của phân loại nguyên liệu
     Route::get('/recycle', [IngredientController::class, 'recycle'])->defaults('_config', [
         'view' => 'ingredients.recycle'
     ])->name('recycle');
 
-    Route::get('/restore/{id}', [IngredientController::class, 'restore'])->defaults('_config', [
+    Route::post('/restore/{id}', [IngredientController::class, 'restore'])->defaults('_config', [
         'redirect' => 'ingredients.recycle'
     ])->name('restore');
 
-    Route::get('/force-delete/{id}', [IngredientController::class, 'forceDelete'])->defaults('_config', [
+    Route::post('/force-delete/{id}', [IngredientController::class, 'forceDelete'])->defaults('_config', [
         'redirect' => 'ingredients.recycle'
     ])->name('forceDelete');
+
+    // Route cho việc quản lý nguyên liệu trong phân loại
+    Route::get('/{categoryId}/create-ingredient', [IngredientController::class, 'createIngredient'])->defaults('_config', [
+        'view' => 'ingredients.create_ingredient'
+    ])->name('createIngredient');
+
+    Route::post('/{categoryId}/store-ingredient', [IngredientController::class, 'storeIngredient'])->defaults('_config', [
+        'redirect' => 'ingredients.show'
+    ])->name('storeIngredient');
+
+    Route::get('/edit-ingredient/{id}', [IngredientController::class, 'editIngredient'])->defaults('_config', [
+        'view' => 'ingredients.edit_ingredient'
+    ])->name('editIngredient');
+
+    Route::put('/update-ingredient/{id}', [IngredientController::class, 'updateIngredient'])->defaults('_config', [
+        'redirect' => 'ingredients.show'
+    ])->name('updateIngredient');
+
+    Route::delete('/destroy-ingredient/{id}', [IngredientController::class, 'destroyIngredient'])->defaults('_config', [
+        'redirect' => 'ingredients.show'
+    ])->name('destroyIngredient');
+
+    // Route cho thùng rác của nguyên liệu trong phân loại
+    Route::get('/{categoryId}/recycle-ingredient', [IngredientController::class, 'recycleIngredient'])->defaults('_config', [
+        'view' => 'ingredients.recycle_ingredient'
+    ])->name('recycleIngredient');
+
+    Route::post('/restore-ingredient/{id}', [IngredientController::class, 'restoreIngredient'])->defaults('_config', [
+        'redirect' => 'ingredients.recycleIngredient'
+    ])->name('restoreIngredient');
+
+    Route::post('/force-delete-ingredient/{id}', [IngredientController::class, 'forceDeleteIngredient'])->defaults('_config', [
+        'redirect' => 'ingredients.recycleIngredient'
+    ])->name('forceDeleteIngredient');
+
+    // Sử dụng Route::resource để định nghĩa các route chuẩn cho phân loại nguyên liệu
+    // Đặt ở cuối để tránh ghi đè các route cụ thể
+    Route::resource('/', IngredientController::class)->parameters(['' => 'ingredient']);
 });
 
 // Quản lý bao bì

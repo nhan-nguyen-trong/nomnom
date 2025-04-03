@@ -10,17 +10,16 @@ class PackagingSeeder extends Seeder
     public function run(): void
     {
         Packaging::create([
-            'name' => 'Bọc giấy',
+            'name' => 'Hộp giấy',
+            'quantity' => 50,
+            'unit' => 'cái',
+            'price' => 2000,
+        ]);
+        Packaging::create([
+            'name' => 'Túi nilon',
             'quantity' => 100,
             'unit' => 'cái',
-            'price' => 500, // Giá: 500 VNĐ/cái
-        ]);
-
-        Packaging::create([
-            'name' => 'Túi nilong',
-            'quantity' => 200,
-            'unit' => 'cái',
-            'price' => 200, // Giá: 200 VNĐ/cái
+            'price' => 500,
         ]);
     }
 }

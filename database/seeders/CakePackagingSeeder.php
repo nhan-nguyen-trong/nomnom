@@ -2,23 +2,29 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cake;
+use App\Models\Packaging;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CakePackagingSeeder extends Seeder
 {
     public function run(): void
     {
-        // Bánh mì kẹp (cake_id: 1) dùng túi giấy (packaging_id: 1)
-        DB::table('cake_packaging')->insert([
-            'cake_id' => 1,
-            'packaging_id' => 1,
-        ]);
+        $tiramisu = Cake::where('name', 'Tiramisu')->first();
+        $pizza = Cake::where('name', 'Pizza')->first();
+        $banhMi = Cake::where('name', 'Bánh mì')->first();
 
-        // Bánh ngọt nhân kem (cake_id: 2) dùng hộp nhựa (packaging_id: 2)
-        DB::table('cake_packaging')->insert([
-            'cake_id' => 2,
-            'packaging_id' => 2,
-        ]);
+        $hopGiay = Packaging::where('name', 'Hộp giấy')->first();
+        $tuiNilon = Packaging::where('name', 'Túi nilon')->first();
+
+        // Tiramisu: Hộp giấy + Túi nilon
+        $tiramisu->packagings()->attach($hopGiay->id, ['quantity' => 1]);
+        $tiramisu->packagings()->attach($tuiNilon->id, ['quantity' => 1]);
+
+        // Pizza: Hộp giấy
+        $pizza->packagings()->attach($hopGiay->id, ['quantity' => 1]);
+
+        // Bánh mì: Túi nilon
+        $banhMi->packagings()->attach($tuiNilon->id, ['quantity' => 1]);
     }
 }

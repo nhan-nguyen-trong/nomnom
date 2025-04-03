@@ -350,6 +350,33 @@
 <!-- Livewire Scripts -->
 @livewireScripts
 
+<!-- Popup delete -->
+<script>
+    function confirmDelete(id, resource) {
+        if (confirm('Bạn có chắc chắn muốn xóa không?')) {
+            // Tạo form động để gửi request DELETE
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/${resource}/${id}`;
+
+            const methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = '_token';
+            tokenInput.value = '{{ csrf_token() }}';
+
+            form.appendChild(methodInput);
+            form.appendChild(tokenInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+
 <!-- Custom Scripts -->
 @yield('scripts')
 </body>

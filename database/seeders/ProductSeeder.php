@@ -2,33 +2,37 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
+use App\Models\Cake;
 use App\Models\Product;
+use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        // Bán 5 bánh mì kẹp (cake_id: 1)
+        $tiramisu = Cake::where('name', 'Tiramisu')->first();
+        $pizza = Cake::where('name', 'Pizza')->first();
+
+        // Giao dịch bán 2 bánh Tiramisu
         Product::create([
-            'cake_id' => 1,
-            'ingredient_cost' => 102.50, // 5kg bột mì (5*20) + 50ml sữa (50*0.05)
-            'packaging_cost' => 5.00, // 5 túi giấy (5*1)
-            'depreciation_cost' => 0,
-            'quantity_sold' => 5,
-            'total_cost' => 107.50,
-            'selling_price' => 150.00, // 30,000 VND/cái * 5
+            'cake_id' => $tiramisu->id,
+            'ingredient_cost' => 4500, // 2 kg bột mì (1000đ/kg) + 1 kg đường (1500đ/kg) + 1 lít sữa (1500đ/kg) = 2000 + 1500 + 1500 = 5000đ/bánh
+            'packaging_cost' => 5000, // Hộp giấy (2000đ) + Túi nilon (500đ) = 2500đ/bánh
+            'depreciation_cost' => 20000, // 10000đ/bánh
+            'quantity_sold' => 2,
+            'total_cost' => 29500, // (5000 + 2500 + 10000) * 2
+            'selling_price' => 40000,
         ]);
 
-        // Bán 3 bánh ngọt nhân kem (cake_id: 2)
+        // Giao dịch bán 1 bánh Pizza
         Product::create([
-            'cake_id' => 2,
-            'ingredient_cost' => 33.00, // 1.5kg bột mì (1.5*20) + 60ml sữa (60*0.05)
-            'packaging_cost' => 6.00, // 3 hộp nhựa (3*2)
-            'depreciation_cost' => 0,
-            'quantity_sold' => 3,
-            'total_cost' => 39.00,
-            'selling_price' => 90.00, // 30,000 VND/cái * 3
+            'cake_id' => $pizza->id,
+            'ingredient_cost' => 4250, // 1 kg bột mì (1000đ/kg) + 0.5 kg đường (1500đ/kg) + 2 quả trứng (2000đ/quả) = 1000 + 750 + 4000 = 5750đ/bánh
+            'packaging_cost' => 2000, // Hộp giấy (2000đ)
+            'depreciation_cost' => 8000, // 8000đ/bánh
+            'quantity_sold' => 1,
+            'total_cost' => 15750, // 5750 + 2000 + 8000
+            'selling_price' => 20000,
         ]);
     }
 }

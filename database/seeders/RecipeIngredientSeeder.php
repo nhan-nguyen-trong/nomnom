@@ -2,35 +2,35 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ingredient;
+use App\Models\Recipe;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class RecipeIngredientSeeder extends Seeder
 {
     public function run(): void
     {
-        // Công thức bánh mì (recipe_id: 1)
-        DB::table('recipe_ingredients')->insert([
-            'recipe_id' => 1,
-            'ingredient_id' => 1, // Bột mì
-            'quantity' => 1.00, // 1kg bột mì cho 1 bánh mì
-        ]);
-        DB::table('recipe_ingredients')->insert([
-            'recipe_id' => 1,
-            'ingredient_id' => 2, // Sữa
-            'quantity' => 10.00, // 10ml sữa cho 1 bánh mì
-        ]);
+        $botMiA = Ingredient::where('name', 'Bột mì A')->first();
+        $duong = Ingredient::where('name', 'Đường trắng')->first();
+        $sua = Ingredient::where('name', 'Sữa tươi')->first();
+        $trung = Ingredient::where('name', 'Trứng gà')->first();
 
-        // Công thức bánh ngọt (recipe_id: 2)
-        DB::table('recipe_ingredients')->insert([
-            'recipe_id' => 2,
-            'ingredient_id' => 1, // Bột mì
-            'quantity' => 0.5, // 0.5kg bột mì cho 1 bánh ngọt
-        ]);
-        DB::table('recipe_ingredients')->insert([
-            'recipe_id' => 2,
-            'ingredient_id' => 2, // Sữa
-            'quantity' => 20.00, // 20ml sữa cho 1 bánh ngọt
-        ]);
+        $tiramisuRecipe = Recipe::where('name', 'Công thức Tiramisu')->first();
+        $pizzaRecipe = Recipe::where('name', 'Công thức Pizza')->first();
+        $banhMiRecipe = Recipe::where('name', 'Công thức Bánh mì')->first();
+
+        // Công thức Tiramisu: 2 kg bột mì, 1 kg đường, 1 lít sữa
+        $tiramisuRecipe->ingredients()->attach($botMiA->id, ['quantity' => 2]);
+        $tiramisuRecipe->ingredients()->attach($duong->id, ['quantity' => 1]);
+        $tiramisuRecipe->ingredients()->attach($sua->id, ['quantity' => 1]);
+
+        // Công thức Pizza: 1 kg bột mì, 0.5 kg đường, 2 quả trứng
+        $pizzaRecipe->ingredients()->attach($botMiA->id, ['quantity' => 1]);
+        $pizzaRecipe->ingredients()->attach($duong->id, ['quantity' => 0.5]);
+        $pizzaRecipe->ingredients()->attach($trung->id, ['quantity' => 2]);
+
+        // Công thức Bánh mì: 1.5 kg bột mì, 1 lít sữa
+        $banhMiRecipe->ingredients()->attach($botMiA->id, ['quantity' => 1.5]);
+        $banhMiRecipe->ingredients()->attach($sua->id, ['quantity' => 1]);
     }
 }
