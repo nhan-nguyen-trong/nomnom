@@ -23,13 +23,13 @@
             @if ($packagings->isEmpty())
                 <p>Không có bao bì nào.</p>
             @else
+                <p><strong>Tổng tiền: {{ Str::formatVND($totalPrice) }}</strong></p>
                 <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Tên bao bì</th>
                         <th>Số lượng</th>
-                        <th>Đơn vị</th>
                         <th>Giá niêm yết</th>
                         <th>Đơn giá</th>
                         <th>Hành động</th>
@@ -40,13 +40,12 @@
                         <tr>
                             <td>{{ $packaging->id }}</td>
                             <td>{{ $packaging->name }}</td>
-                            <td>{{ $packaging->quantity }}</td>
-                            <td>{{ $packaging->unit }}</td>
+                            <td>{{ $packaging->quantity }} {{ $packaging->unit }}</td>
                             <td>{{  Str::formatVND($packaging->price) }}</td>
-                            <td>{{  Str::formatVND($packaging->unit_price) }}</td>
+                            <td>{{  Str::formatVND($packaging->unit_price) }} / {{ $packaging->unit }}</td>
                             <td>
                                 <a href="{{ route('packagings.edit', $packaging->id) }}" class="btn btn-primary btn-sm">Sửa</a>
-                                <a href="{{ route('packagings.delete', $packaging->id) }}" class="btn btn-danger btn-sm">Xóa</a>
+                                <button onclick="confirmDelete({{ $packaging->id }}, 'packagings')" class="btn btn-danger btn-sm">Xóa</button>
                             </td>
                         </tr>
                     @endforeach

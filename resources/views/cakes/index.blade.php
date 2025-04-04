@@ -40,18 +40,20 @@
                             {{ $cake->recipe->name ?? 'N/A' }}
                         </td>
                         <td>
-                            @if ($cake->packagings->isNotEmpty())
-                                @foreach ($cake->packagings as $packaging)
-                                    {{ $packaging->name }}<br>
-                                @endforeach
-                            @else
-                                N/A
-                            @endif
+                            <ul>
+                                @if ($cake->packagings->isNotEmpty())
+                                    @foreach ($cake->packagings as $packaging)
+                                        <li>{{ $packaging->name }}</li>
+                                    @endforeach
+                                @else
+                                    N/A
+                                @endif
+                            </ul>
                         </td>
                         <td>{{ Str::formatVND($cake->depreciation) }}</td>
                         <td>
                             <a href="{{ route('cakes.edit', $cake->id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <a href="{{ route('cakes.delete', $cake->id) }}" class="btn btn-danger btn-sm">Xóa</a>
+                            <button onclick="confirmDelete({{ $cake->id }}, 'cakes')" class="btn btn-danger btn-sm">Xóa</button>
                         </td>
                     </tr>
                 @endforeach

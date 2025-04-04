@@ -109,15 +109,6 @@ class RecipeController extends Controller
     }
 
     /**
-     * Show the form for deleting the specified resource.
-     */
-    public function delete(int $id): View
-    {
-        $recipe = Recipe::findOrFail($id);
-        return view('recipes.delete', compact('recipe'));
-    }
-
-    /**
      * Remove the specified resource from storage (soft delete).
      */
     public function destroy(int $id): RedirectResponse

@@ -90,10 +90,6 @@ Route::group(['prefix' => 'packagings', 'as' => 'packagings.'], function () {
         'redirect' => 'packagings.index'
     ])->name('update');
 
-    Route::get('/delete/{id}', [PackagingController::class, 'delete'])->defaults('_config', [
-        'view' => 'packagings.delete'
-    ])->name('delete');
-
     Route::delete('/destroy/{id}', [PackagingController::class, 'destroy'])->defaults('_config', [
         'redirect' => 'packagings.index'
     ])->name('destroy');
@@ -132,10 +128,6 @@ Route::group(['prefix' => 'recipes', 'as' => 'recipes.'], function () {
     Route::post('/update/{id}', [RecipeController::class, 'update'])->defaults('_config', [
         'redirect' => 'recipes.index'
     ])->name('update');
-
-    Route::get('/delete/{id}', [RecipeController::class, 'delete'])->defaults('_config', [
-        'view' => 'recipes.delete'
-    ])->name('delete');
 
     Route::delete('/destroy/{id}', [RecipeController::class, 'destroy'])->defaults('_config', [
         'redirect' => 'recipes.index'
@@ -176,10 +168,6 @@ Route::group(['prefix' => 'cakes', 'as' => 'cakes.'], function () {
         'redirect' => 'cakes.index'
     ])->name('update');
 
-    Route::get('/delete/{id}', [CakeController::class, 'delete'])->defaults('_config', [
-        'view' => 'cakes.delete'
-    ])->name('delete');
-
     Route::delete('/destroy/{id}', [CakeController::class, 'destroy'])->defaults('_config', [
         'redirect' => 'cakes.index'
     ])->name('destroy');
@@ -218,10 +206,6 @@ Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
     Route::post('/update/{id}', [ProductController::class, 'update'])->defaults('_config', [
         'redirect' => 'products.index'
     ])->name('update');
-
-    Route::get('/delete/{id}', [ProductController::class, 'delete'])->defaults('_config', [
-        'view' => 'products.delete'
-    ])->name('delete');
 
     Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->defaults('_config', [
         'redirect' => 'products.index'

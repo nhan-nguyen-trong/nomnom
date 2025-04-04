@@ -29,13 +29,15 @@
                         <td>{{ $recipe->id }}</td>
                         <td>{{ $recipe->name }}</td>
                         <td>
-                            @foreach ($recipe->ingredients as $ingredient)
-                                {{ $ingredient->name }} ({{ Number::formatSmart($ingredient->pivot->quantity) }} {{ $ingredient->unit }}),
-                            @endforeach
+                            <ul>
+                                @foreach ($recipe->ingredients as $ingredient)
+                                    <li>{{ $ingredient->name }} ({{ Number::formatSmart($ingredient->pivot->quantity) }} {{ $ingredient->unit }})</li>
+                                @endforeach
+                            </ul>
                         </td>
                         <td>
                             <a href="{{ route('recipes.edit', $recipe->id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <a href="{{ route('recipes.delete', $recipe->id) }}" class="btn btn-danger btn-sm">Xóa</a>
+                            <button onclick="confirmDelete({{ $recipe->id }}, 'recipes')" class="btn btn-danger btn-sm">Xóa</button>
                         </td>
                     </tr>
                 @endforeach

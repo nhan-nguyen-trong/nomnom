@@ -49,9 +49,7 @@
                         <td>{{ Str::formatVND($product->selling_price - $product->total_cost) }}</td>
                         <td>
                             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $product->id }}, 'products')">
-                                Xóa
-                            </button>
+                            <button onclick="confirmDelete({{ $product->id }}, 'products')" class="btn btn-danger btn-sm">Xóa</button>
                         </td>
                     </tr>
                 @endforeach

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'NomNom')</title>
 
     <!--begin::Fonts-->
@@ -50,8 +51,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <!--Pagination CSS-->
-    <link rel="stylesheet" href="{{asset('adminlte/publish/css/pagination.css')}}" />
+    <!-- Pagination CSS -->
+    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/pagination.css') }}">
 
     <!-- Livewire Styles -->
     @livewireStyles
@@ -346,34 +347,52 @@
 
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Livewire Scripts -->
 @livewireScripts
 
-<!-- Popup delete -->
 <script>
     function confirmDelete(id, resource) {
-        if (confirm('Bạn có chắc chắn muốn xóa không?')) {
-            // Tạo form động để gửi request DELETE
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/${resource}/${id}`;
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa không?',
+            text: "Hành động này không thể hoàn tác!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Tạo form động để gửi request DELETE
+                const form = document.createElement('form');
+                form.method = 'POST';
 
-            const methodInput = document.createElement('input');
-            methodInput.type = 'hidden';
-            methodInput.name = '_method';
-            methodInput.value = 'DELETE';
+                // Xử lý route cho từng resource
+                if (resource === 'ingredients/destroyIngredient') {
+                    form.action = `/ingredients/destroy-ingredient/${id}`; // Route đặc biệt cho destroyIngredient
+                } else {
+                    form.action = `/${resource}/destroy/${id}`; // Route chuẩn cho các resource khác
+                }
 
-            const tokenInput = document.createElement('input');
-            tokenInput.type = 'hidden';
-            tokenInput.name = '_token';
-            tokenInput.value = '{{ csrf_token() }}';
+                const methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'DELETE';
 
-            form.appendChild(methodInput);
-            form.appendChild(tokenInput);
-            document.body.appendChild(form);
-            form.submit();
-        }
+                const tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = '_token';
+                tokenInput.value = document.querySelector('meta[name="csrf-token"]').content;
+
+                form.appendChild(methodInput);
+                form.appendChild(tokenInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
     }
 </script>
 

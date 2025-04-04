@@ -95,12 +95,6 @@ class CakeController extends Controller
         return redirect()->route('cakes.index')->with('success', 'Cập nhật bánh thành công!');
     }
 
-    public function delete(int $id): View
-    {
-        $cake = Cake::findOrFail($id);
-        return view('cakes.delete', compact('cake'));
-    }
-
     public function destroy(int $id): RedirectResponse
     {
         $cake = Cake::findOrFail($id);

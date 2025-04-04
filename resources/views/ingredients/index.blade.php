@@ -41,32 +41,7 @@
                         <td>
                             <a href="{{ route('ingredients.show', $category->id) }}" class="btn btn-info btn-sm">Chi tiết</a>
                             <a href="{{ route('ingredients.edit', $category->id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{ $category->id }}">Xóa</button>
-
-                            <!-- Modal xác nhận xóa -->
-                            <div class="modal fade" id="deleteModal{{ $category->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ $category->id }}" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel{{ $category->id }}">Xác nhận xóa</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Bạn có chắc chắn muốn xóa loại nguyên liệu <strong>{{ $category->name }}</strong> không?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                            <form action="{{ route('ingredients.destroy', $category->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Xóa</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <button onclick="confirmDelete({{ $category->id }}, 'ingredients')" class="btn btn-danger btn-sm">Xóa</button>
                         </td>
                     </tr>
                 @endforeach
@@ -78,15 +53,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="modal"]').on('click', function () {
-                const target = $(this).data('target');
-                $(target).modal('show');
-            });
-        });
-    </script>
 @endsection

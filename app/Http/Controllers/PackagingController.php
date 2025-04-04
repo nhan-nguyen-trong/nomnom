@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ingredient;
 use App\Models\Packaging;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -15,7 +16,8 @@ class PackagingController extends Controller
     public function index(): View
     {
         $packagings = Packaging::latest()->paginate(10); // Phân trang, mỗi trang 10 bản ghi
-        return view('packagings.index', compact('packagings'));
+        $totalPrice = Packaging::sum('price');
+        return view('packagings.index', compact('packagings', 'totalPrice'));
     }
 
     /**
@@ -68,15 +70,6 @@ class PackagingController extends Controller
         $packaging = Packaging::findOrFail($id);
         $packaging->update($request->all());
         return redirect()->route('packagings.index')->with('success', 'Cập nhật bao bì thành công!');
-    }
-
-    /**
-     * Show the form for deleting the specified resource.
-     */
-    public function delete(int $id): View
-    {
-        $packaging = Packaging::findOrFail($id);
-        return view('packagings.delete', compact('packaging'));
     }
 
     /**

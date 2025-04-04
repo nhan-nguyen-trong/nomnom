@@ -41,21 +41,32 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/recipes') }}" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-book"></i>
-                        <p>Quản lý công thức</p>
+                        <p>
+                            QL công thức
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/cakes') }}" class="nav-link">
-                        <i class="nav-icon fas fa-birthday-cake"></i>
-                        <p>Sản xuất bánh</p>
-                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('/recipes') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Công thức</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('/cakes') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Bao bì / Khấu hao</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/products') }}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
-                        <p>Bán bánh</p>
+                        <p>Sản xuất bánh</p>
                     </a>
                 </li>
                 <li class="nav-item">
