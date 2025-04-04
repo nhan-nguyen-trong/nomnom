@@ -37,6 +37,7 @@ class ProductController extends Controller
         $quantitySold = $request->quantity_sold;
         $sellingPrice = $request->selling_price;
 
+        // Kiểm tra số lượng nguyên liệu và bao bì
         if ($cake->recipe && $cake->recipe->ingredients) {
             foreach ($cake->recipe->ingredients as $ingredient) {
                 $requiredQuantity = $ingredient->pivot->quantity * $quantitySold;
@@ -53,6 +54,7 @@ class ProductController extends Controller
             }
         }
 
+        // Tính chi phí nguyên liệu
         $ingredientCostPerCake = 0;
         if ($cake->recipe && $cake->recipe->ingredients) {
             $ingredientCostPerCake = $cake->recipe->ingredients->sum(function ($ingredient) {
@@ -63,14 +65,18 @@ class ProductController extends Controller
         }
         $totalIngredientCost = $ingredientCostPerCake * $quantitySold;
 
-        $packagingCostPerCake = $cake->packagings->sum('price');
+        // Tính chi phí bao bì (dùng unit_price thay vì price)
+        $packagingCostPerCake = $cake->packagings->sum('unit_price');
         $totalPackagingCost = $packagingCostPerCake * $quantitySold;
 
+        // Tính chi phí khấu hao
         $depreciationCostPerCake = $cake->depreciation;
         $totalDepreciationCost = $depreciationCostPerCake * $quantitySold;
 
+        // Tổng chi phí
         $totalCost = $totalIngredientCost + $totalPackagingCost + $totalDepreciationCost;
 
+        // Lưu giao dịch và cập nhật kho
         DB::transaction(function () use ($cake, $quantitySold, $totalIngredientCost, $totalPackagingCost, $totalDepreciationCost, $totalCost, $sellingPrice) {
             if ($cake->recipe && $cake->recipe->ingredients) {
                 foreach ($cake->recipe->ingredients as $ingredient) {
@@ -121,6 +127,7 @@ class ProductController extends Controller
         $quantitySold = $request->quantity_sold;
         $sellingPrice = $request->selling_price;
 
+        // Hoàn lại số lượng nguyên liệu và bao bì của giao dịch cũ
         DB::transaction(function () use ($product, $oldQuantitySold) {
             $oldCake = Cake::with(['recipe.ingredients', 'packagings'])->findOrFail($product->cake_id);
 
@@ -139,6 +146,7 @@ class ProductController extends Controller
             }
         });
 
+        // Kiểm tra số lượng nguyên liệu và bao bì cho giao dịch mới
         if ($cake->recipe && $cake->recipe->ingredients) {
             foreach ($cake->recipe->ingredients as $ingredient) {
                 $requiredQuantity = $ingredient->pivot->quantity * $quantitySold;
@@ -155,6 +163,7 @@ class ProductController extends Controller
             }
         }
 
+        // Tính chi phí nguyên liệu
         $ingredientCostPerCake = 0;
         if ($cake->recipe && $cake->recipe->ingredients) {
             $ingredientCostPerCake = $cake->recipe->ingredients->sum(function ($ingredient) {
@@ -165,14 +174,18 @@ class ProductController extends Controller
         }
         $totalIngredientCost = $ingredientCostPerCake * $quantitySold;
 
-        $packagingCostPerCake = $cake->packagings->sum('price');
+        // Tính chi phí bao bì (dùng unit_price thay vì price)
+        $packagingCostPerCake = $cake->packagings->sum('unit_price');
         $totalPackagingCost = $packagingCostPerCake * $quantitySold;
 
+        // Tính chi phí khấu hao
         $depreciationCostPerCake = $cake->depreciation;
         $totalDepreciationCost = $depreciationCostPerCake * $quantitySold;
 
+        // Tổng chi phí
         $totalCost = $totalIngredientCost + $totalPackagingCost + $totalDepreciationCost;
 
+        // Cập nhật giao dịch và kho
         DB::transaction(function () use ($cake, $quantitySold, $product, $totalIngredientCost, $totalPackagingCost, $totalDepreciationCost, $totalCost, $sellingPrice) {
             if ($cake->recipe && $cake->recipe->ingredients) {
                 foreach ($cake->recipe->ingredients as $ingredient) {

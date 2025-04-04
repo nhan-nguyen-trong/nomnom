@@ -14,12 +14,14 @@ class PackagingSeeder extends Seeder
             'quantity' => 50,
             'unit' => 'cái',
             'price' => 2000,
+            'unit_price' => 200,
         ]);
         Packaging::create([
             'name' => 'Túi nilon',
             'quantity' => 100,
             'unit' => 'cái',
             'price' => 500,
+            'unit_price' => 200,
         ]);
     }
 }

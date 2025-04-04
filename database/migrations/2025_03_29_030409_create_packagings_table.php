@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('unit');
             $table->integer('price'); // Thay đổi từ decimal(8,2) thành integer
             $table->integer('quantity'); // Thay đổi từ decimal(8,2) thành integer
+            $table->integer('unit_price')->default(0.00);
             $table->timestamps();
             $table->softDeletes(); // Thêm cột deleted_at để hỗ trợ xóa mềm
         });

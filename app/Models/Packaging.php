@@ -11,7 +11,7 @@ class Packaging extends Model
 
     protected $table = 'packagings';
 
-    protected $fillable = ['name', 'unit', 'price', 'quantity'];
+    protected $fillable = ['name', 'unit', 'price' ,'unit_price', 'quantity'];
 
     public function cakes()
     {

@@ -31,6 +31,14 @@ class PackagingController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|numeric|min:0',
+            'unit' => 'required|string|max:50',
+            'price' => 'required|numeric|min:0',
+            'unit_price' => 'required|numeric|min:0',
+        ]);
+
         Packaging::create($request->all());
         return redirect()->route('packagings.index')->with('success', 'Thêm bao bì thành công!');
     }
@@ -49,6 +57,14 @@ class PackagingController extends Controller
      */
     public function update(Request $request, int $id): RedirectResponse
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|numeric|min:0',
+            'unit' => 'required|string|max:50',
+            'price' => 'required|numeric|min:0',
+            'unit_price' => 'required|numeric|min:0',
+        ]);
+
         $packaging = Packaging::findOrFail($id);
         $packaging->update($request->all());
         return redirect()->route('packagings.index')->with('success', 'Cập nhật bao bì thành công!');
@@ -78,7 +94,8 @@ class PackagingController extends Controller
      */
     public function recycle(): View
     {
-        return view('packagings.recycle');
+        $packagings = Packaging::onlyTrashed()->get();
+        return view('packagings.recycle', compact('packagings'));
     }
 
     /**
